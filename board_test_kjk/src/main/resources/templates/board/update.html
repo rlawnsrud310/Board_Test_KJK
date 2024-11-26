@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수정</title>
+</head>
+<body>
+    <h1>수정</h1>
+
+    <form action="" method="post">
+
+        <table border="1">
+            <form action="" method="post">
+
+                <tbody>
+                    <tr>
+                        <th>제목</th>
+                        <td>
+                            <input type="text" name="title" th:value="${board.title}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td>
+                            <input type="text" name="writer" th:value="${board.writer}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea name="content" rows="5" cols="40" th:text="${board.content}"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                <td colspan="2">
+                    <button type="submit">수정</button>
+                    <button type="button" th:onclick="remove([[${board.no}]])">삭제</button>
+                </td>
+            </tr>
+        </tbody>
+        </form>
+    </table>
+</form>
+<script>
+
+    function remove(no){
+        let request = new XMLHttpRequest()
+        console.log('게시판 삭제 시도')
+        let url = `/board/delete?no=${no}`
+        request.open('DELETE',url,true)
+        request.send()
+        request.onreadystatechange = function() {
+                if( request.readyState == request.DONE && request.status == 200){
+                    let response = request.responseText
+                    console.log(response)
+                    if(response == 'SUCCESS'){
+                        console.log('게시판 삭제 성공')
+                        location.href = "/board/list"
+
+                    }
+                    else{
+                        alert('게시판 삭제 실패')
+                        location.href = `/board/read?no=${no}`
+                    }
+                }
+            }
+        
+
+        
+    }
+
+</script>
+</body>
+</html>
